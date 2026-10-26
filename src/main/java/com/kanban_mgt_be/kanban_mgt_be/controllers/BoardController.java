@@ -1,9 +1,10 @@
 package com.kanban_mgt_be.kanban_mgt_be.controllers;
 
+import com.kanban_mgt_be.kanban_mgt_be.dtos.BoardDto;
 import com.kanban_mgt_be.kanban_mgt_be.dtos.TaskDto;
-import com.kanban_mgt_be.kanban_mgt_be.requests.AddTaskRequest;
-import com.kanban_mgt_be.kanban_mgt_be.requests.UpdateTaskRequest;
-import com.kanban_mgt_be.kanban_mgt_be.services.TaskService;
+import com.kanban_mgt_be.kanban_mgt_be.requests.AddBoardRequest;
+import com.kanban_mgt_be.kanban_mgt_be.requests.AddColumnRequest;
+import com.kanban_mgt_be.kanban_mgt_be.services.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,32 +13,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class TaskController {
+public class BoardController {
     @Autowired
-    private TaskService taskService;
+    private BoardService boardService;
 
-    @GetMapping("/tasks")
-    public ResponseEntity<List<TaskDto>> getTasks(){
-        return new ResponseEntity<List<TaskDto>>(taskService.getTasks(), HttpStatus.OK);
+    @GetMapping("/boards")
+    public ResponseEntity<List<BoardDto>> getBoards(){
+        return new ResponseEntity<List<BoardDto>>(boardService.getBoards(), HttpStatus.OK);
     }
 
-    @GetMapping("/tasks/{id}")
-    public ResponseEntity<TaskDto> getTaskById(Long id){
-        return new ResponseEntity<TaskDto>(taskService.getTaskById(id), HttpStatus.OK);
+    @GetMapping("/boards/{id}")
+    public ResponseEntity<BoardDto> getBoardById(Long id){
+        return new ResponseEntity<BoardDto>(boardService.getBoardById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/tasks")
-    public ResponseEntity<String> createTask(@RequestBody AddTaskRequest addTaskRequest){
-        return new ResponseEntity<String>(taskService.createTask(addTaskRequest), HttpStatus.CREATED);
+    @PostMapping("/boards")
+    public ResponseEntity<BoardDto> createBoard(@RequestBody AddBoardRequest addBoardRequest){
+        return new ResponseEntity<BoardDto>(boardService.createBoard(addBoardRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("/tasks")
-    public ResponseEntity<String> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest, @RequestParam Long id){
-        return new ResponseEntity<String>(taskService.updateTask(updateTaskRequest, id), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/tasks/{id}")
-    public ResponseEntity<String> deleteTask(@RequestParam Long id){
-        return new ResponseEntity<String>(taskService.deleteTask(id), HttpStatus.OK);
+    @PostMapping("/boards/{id}/columns")
+    public ResponseEntity<String> addColumnsToBoard(@RequestBody AddColumnRequest addColumnRequest){
+        return new ResponseEntity<String>(boardService.addColumnsToBoard(addColumnRequest), HttpStatus.CREATED);
     }
 }
